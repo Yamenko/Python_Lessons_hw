@@ -1,6 +1,5 @@
 ﻿# Сортировка кучей (Пирамидальная)
 
-
 from random import randint
 from time import time
 
@@ -9,7 +8,7 @@ def list_gen(mi=-5, ma=5, le=10):
 
 def algo_time(func, x):
      start = time()
-     func(x)
+     print(func(x))
      finish = time() - start
      print(f"Заняло {finish} сек")
   
@@ -26,14 +25,31 @@ def heaping(sp, ln, i):
           heaping(sp, ln, parent_index)
         
 
-def heap_sort(sp):
-    for i in range(len(sp)//2, -1, -1):
-         heaping(sp, len(sp), i)
-    for i in range(len(sp) - 1, -1, -1):
-        sp[0], sp[i] = sp[i], sp[0]
-        heaping(sp, i, 0)
+# def heap_sort(sp):
+#     for i in range(len(sp)//2, -1, -1):
+#          heaping(sp, len(sp), i)
+#     for i in range(len(sp) - 1, -1, -1):
+#         sp[0], sp[i] = sp[i], sp[0]
+#         heaping(sp, i, 0)
+#     return sp
         
-print(sp := list_gen(-100, 100, 20))
-print(algo_time(heap_sort, sp))
-print(sp)
+# print(sp := list_gen(-100, 100, 20))
+# algo_time(heap_sort, sp)
 
+
+
+# Доработанная сортировка подсчетом
+
+def counting_sort(sp):
+    shift = min(sp) if min(sp) < 0 else 0  
+    lst=[0 for _ in range(max(sp) + 1 - shift)] # + (-shift)!
+    for i in sp:
+        lst[i - shift] += 1
+    ret_sp = []
+    for i in range(len(lst)):
+        if lst[i]:
+            ret_sp.extend((i + shift) for _ in range(lst[i]))
+    return ret_sp
+
+print(sp := list_gen(-100, 100, 20))
+algo_time(counting_sort, sp)
